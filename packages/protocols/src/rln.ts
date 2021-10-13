@@ -1,0 +1,49 @@
+import { ZkProtocol } from "./zk-protocol";
+import { genSignalHash, poseidonHash } from "./utils";
+import { SNARK_FIELD_SIZE } from "./utils";
+
+const ZqField = require('ffjavascript').ZqField;
+const Fq = new ZqField(SNARK_FIELD_SIZE);
+
+//TODO create new module just for types
+export interface identity {
+    identityNullifier: bigint,
+    identityTrapdoor: bigint,
+}
+
+class Rln extends ZkProtocol {
+    generateGrothInput(identity: identity, merkleProof: any, epoch: string | bigint, signal: string, rlnIdentifier: bigint, shouldHash: boolean = true): any {
+        return {
+            identity_secret: poseidonHash([identity.identityTrapdoor, identity.identityNullifier]),
+            path_elements: merkleProof.pathElements,
+            identity_path_index: merkleProof.indices,
+            x: shouldHash ? genSignalHash(signal): signal,
+            epoch,
+            rln_identifier: rlnIdentifier,
+        }
+    }
+
+    calculateOutput(identitySecret: bigint, epoch: string, rlnIdentifier: bigint, x: bigint): Array<bigint> {
+        const a1: bigint = poseidonHash([identitySecret, BigInt(epoch), rlnIdentifier]);
+        const y: bigint = Fq.normalize(a1 * x + identitySecret);
+        const nullifier = this.genNullifier(a1, rlnIdentifier);
+        return [y, nullifier]
+    }
+
+    genNullifier(a1: bigint, rlnIdentifier: bigint): bigint {
+        return poseidonHash([a1, rlnIdentifier]);
+    }
+
+    retrievePrivateKey(x1: bigint, x2:bigint, y1:bigint, y2:bigint): bigint {
+        const slope = Fq.div(Fq.sub(y2, y1), Fq.sub(x2, x1))
+        const privateKey = Fq.sub(y1, Fq.mul(slope, x1));
+        return Fq.normalize(privateKey);
+    }
+
+    genIdentifier(): bigint {
+        return Fq.random();
+    }
+
+}
+
+export default new Rln();

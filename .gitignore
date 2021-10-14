@@ -1,4 +1,2 @@
-#Identity
-packages/identity/node_modules/
-#Protocols
-packages/protocols/node_modules/
+node_modules
+dist

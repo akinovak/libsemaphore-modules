@@ -1,7 +1,5 @@
-import Identity, { identity } from './identity-factory';
+import Identity from './identity-factory';
 
-//TODO separate types
 export {
-    identity,
     Identity
 }

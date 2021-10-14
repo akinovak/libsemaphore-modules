@@ -8,7 +8,7 @@ export interface IProof {
 
 export class ZkProtocol {
 
-    genWitnessAndProof(grothInput: any, wasmFilePath: string, finalZkeyPath: string): Promise<IProof> {
+    genProof(grothInput: any, wasmFilePath: string, finalZkeyPath: string): Promise<IProof> {
         return groth16.fullProve(grothInput, wasmFilePath, finalZkeyPath);
     }
 

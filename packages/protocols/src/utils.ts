@@ -2,9 +2,13 @@ const Tree = require('incrementalquintree/build/IncrementalQuinTree');
 import * as ciromlibjs from 'circomlibjs';
 import * as ethers from 'ethers';
 
+export const SNARK_FIELD_SIZE: bigint = BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617");
+
+const ZqField = require('ffjavascript').ZqField;
+export const Fq = new ZqField(SNARK_FIELD_SIZE);
+
 type IncrementalQuinTree = any;
 
-export const SNARK_FIELD_SIZE: bigint = BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617");
 
 export const poseidonHash = (data: Array<bigint>): bigint => {
     return ciromlibjs.poseidon(data);

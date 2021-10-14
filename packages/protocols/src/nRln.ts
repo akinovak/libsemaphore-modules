@@ -1,25 +1,16 @@
 import { ZkProtocol } from "./zk-protocol";
 import { genSignalHash, poseidonHash } from "./utils";
-import { SNARK_FIELD_SIZE } from "./utils";
-
-const ZqField = require('ffjavascript').ZqField;
-const Fq = new ZqField(SNARK_FIELD_SIZE);
-
-//TODO create new module just for types
-export interface identity {
-    identityNullifier: bigint,
-    identityTrapdoor: bigint,
-}
+import { Fq } from "./utils";
+import { Identity as _Identity } from '../../types';
 
 class NRln extends ZkProtocol {
-    generateGrothInput(identity: identity, merkleProof: any, epoch: string | bigint, signal: string, rlnIdentifier: bigint, shouldHash: boolean = true): any {
+    genWitness(identity: _Identity, merkleProof: any, epoch: string | bigint, signal: string, shouldHash: boolean = true): any {
         return {
             identity_secret: poseidonHash([identity.identityTrapdoor, identity.identityNullifier]),
             path_elements: merkleProof.pathElements,
             identity_path_index: merkleProof.indices,
             x: shouldHash ? genSignalHash(signal): signal,
             epoch,
-            rln_identifier: rlnIdentifier,
         }
     }
 

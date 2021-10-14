@@ -1,16 +1,10 @@
 import { ZkProtocol } from "./zk-protocol";
 import { genSignalHash, poseidonHash } from "./utils";
 import * as ethers from 'ethers';
-
-
-//TODO create new module just for types
-export interface identity {
-    identityNullifier: bigint,
-    identityTrapdoor: bigint,
-}
+import { Identity as _Identity } from '../../types';
 
 class Semaphore extends ZkProtocol {
-    generateGrothInput(identity: identity, merkleProof: any, externalNullifier: string | bigint, signal: string, shouldHash: boolean = true): any {
+    genWitness(identity: _Identity, merkleProof: any, externalNullifier: string | bigint, signal: string, shouldHash: boolean = true): any {
         return {
             identity_nullifier: identity.identityNullifier,
             identity_trapdoor: identity.identityTrapdoor,

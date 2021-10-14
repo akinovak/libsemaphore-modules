@@ -1,10 +1,7 @@
 const { groth16 } = require('snarkjs');
 import { SNARK_FIELD_SIZE } from "./utils";
+import { IProof } from "../../types";
 
-export interface IProof {
-    proof: any, 
-    publicSignals: Array<bigint | string>,
-}
 
 export class ZkProtocol {
 

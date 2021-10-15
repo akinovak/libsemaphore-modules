@@ -1,6 +1,7 @@
 const Tree = require('incrementalquintree/build/IncrementalQuinTree');
 import * as ciromlibjs from 'circomlibjs';
 import * as ethers from 'ethers';
+import { MerkleProof } from '../../types';
 
 export const SNARK_FIELD_SIZE: bigint = BigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617");
 
@@ -23,7 +24,7 @@ export const createTree = (depth: number, zeroValue: number | BigInt, leavesPerN
     return new Tree.IncrementalQuinTree(depth, zeroValue, leavesPerNode, poseidonHash); 
 }
 
-export const generateMerkleProof = (depth: number, zeroValue: number | BigInt, leavesPerNode: number, leaves: Array<bigint | string>, leaf: bigint | string) => {
+export const generateMerkleProof = (depth: number, zeroValue: number | BigInt, leavesPerNode: number, leaves: Array<bigint | string>, leaf: bigint | string): MerkleProof => {
     const tree: IncrementalQuinTree = new Tree.IncrementalQuinTree(depth, zeroValue, leavesPerNode, poseidonHash);
     const leafIndex = leaves.indexOf(leaf);
     if(leafIndex === -1) throw new Error('Leaf does not exists');
@@ -32,5 +33,9 @@ export const generateMerkleProof = (depth: number, zeroValue: number | BigInt, l
         tree.insert(leaf);
     }
 
-    return tree.genMerklePath(leafIndex);
+    const merkleProof = tree.genMerklePath(leafIndex);
+    return {
+        root: tree.root,
+        ...merkleProof
+    }
 }

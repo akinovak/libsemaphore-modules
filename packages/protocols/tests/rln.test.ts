@@ -1,5 +1,5 @@
 import * as bigintConversion from 'bigint-conversion';
-import { NRln } from "../src/";
+import { Rln } from "../src";
 import { ZkIdentity } from "../../identity/src";
 import { Identity, MerkleProof, IProof } from "../../types";
 import { genSignalHash, genExternalNullifier, generateMerkleProof } from "../src/utils";
@@ -18,12 +18,11 @@ beforeAll(() => {
     }
 })
 
-describe("NRLn", () => {
-    describe("NRln functionalities", () => {
-        it("Generate nrln witness", () => {
-            const limit = 2;
+describe("Rln", () => {
+    describe("Rln functionalities", () => {
+        it("Generate rln witness", () => {
             const identity: Identity = ZkIdentity.genIdentity();
-
+            const identitySecret: bigint = ZkIdentity.genSecret(identity);
             const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identity);
 
             const commitments: Array<bigint> = Object.assign([], identityCommitments);
@@ -31,18 +30,19 @@ describe("NRLn", () => {
 
             const signal = 'hey hey';
             const epoch: string = genExternalNullifier('test-epoch');
+            const rlnIdentifier: bigint = Rln.genIdentifier();
 
-            const merkleProof: MerkleProof = generateMerkleProof(20, BigInt(0), 5, commitments, identityCommitment);
-            const witness: IProof = NRln.genWitness(identity, merkleProof, epoch, signal);
+            const merkleProof: MerkleProof = generateMerkleProof(15, BigInt(0), 5, commitments, identityCommitment);
+            const witness: IProof = Rln.genWitness(identitySecret, merkleProof, epoch, signal, rlnIdentifier);
 
             expect(typeof witness).toBe("object");
         })
-        it("Generate nrln proof and verify it", async () => {
+        it("Generate rln proof and verify it", async () => {
             /**
-             * Compiled semaphore circuits are needed to run this test
+             * Compiled RLN circuits are needed to run this test
              */
-            const limit = 2;
             const identity: Identity = ZkIdentity.genIdentity();
+            const identitySecret: bigint = ZkIdentity.genSecret(identity);
 
             const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identity);
 
@@ -52,21 +52,23 @@ describe("NRLn", () => {
             const signal = 'hey hey';
             const signalHash = genSignalHash(signal);
             const epoch: string = genExternalNullifier('test-epoch');
+            const rlnIdentifier: bigint = Rln.genIdentifier();
 
-            const merkleProof: MerkleProof = generateMerkleProof(20, BigInt(0), 5, commitments, identityCommitment);
-            const witness: IProof = NRln.genWitness(identity, merkleProof, epoch, signal);
 
-            const [y, nullifier] = NRln.calculateOutput([identity.identityTrapdoor, identity.identityNullifier], bigintConversion.hexToBigint(epoch.slice(2)), signalHash, limit);
-            const publicSignals = [y, merkleProof.root, nullifier, signalHash, epoch];
+            const merkleProof: MerkleProof = generateMerkleProof(15, BigInt(0), 2, commitments, identityCommitment);
+            const witness: IProof = Rln.genWitness(identitySecret, merkleProof, epoch, signal, rlnIdentifier);
 
-            const vkeyPath: string = path.join('./zkeyFiles', 'nrln', 'verification_key.json');
+            const [y, nullifier] = Rln.calculateOutput(identitySecret, epoch, rlnIdentifier, signalHash);
+            const publicSignals = [y, merkleProof.root, nullifier, signalHash, epoch, rlnIdentifier];
+
+            const vkeyPath: string = path.join('./zkeyFiles', 'rln', 'verification_key.json');
             const vKey = JSON.parse(fs.readFileSync(vkeyPath, 'utf-8'));
         
-            const wasmFilePath: string = path.join('./zkeyFiles', 'nrln', 'rln.wasm');
-            const finalZkeyPath: string = path.join('./zkeyFiles', 'nrln', 'rln_final.zkey');
+            const wasmFilePath: string = path.join('./zkeyFiles', 'rln', 'rln.wasm');
+            const finalZkeyPath: string = path.join('./zkeyFiles', 'rln', 'rln_final.zkey');
 
-            const fullProof: IProof = await NRln.genProof(witness, wasmFilePath, finalZkeyPath);
-            const res: boolean = await NRln.verifyProof(vKey, { proof: fullProof.proof, publicSignals });
+            const fullProof: IProof = await Rln.genProof(witness, wasmFilePath, finalZkeyPath);
+            const res: boolean = await Rln.verifyProof(vKey, { proof: fullProof.proof, publicSignals });
 
             expect(res).toBe(true);
         })

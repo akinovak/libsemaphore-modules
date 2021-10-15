@@ -1,4 +1,4 @@
-import { genRandomIdentity, genIdentityFromSignedMessage } from './strategies';
+import { genRandomIdentity, genIdentityFromSignedMessage, genRandomNumber } from './strategies';
 import * as bigintConversion from 'bigint-conversion';
 import { sha256 as _sha256 } from "js-sha256";
 import * as ciromlibjs from 'circomlibjs';
@@ -17,15 +17,23 @@ class ZkIdentity {
         throw new Error('provided strategy is not supported');
     }
 
-    genSecret(identity: Identity): bigint {
-        const secret = [identity.identityNullifier, identity.identityTrapdoor];
-        return poseidonHash(secret);
+    genSecretFromIdentity(identity: Identity): bigint[] {
+        return [identity.identityNullifier, identity.identityTrapdoor];
     }
 
-    genIdentityCommitment(identity: Identity): bigint {
-        const secret = [this.genSecret(identity)];
-        return poseidonHash(secret);
+    genRandomSecret(parts: number = 2): bigint[] {
+        const secret: bigint[] = [];
+        for(let i = 0; i< parts; i++) {
+            secret.push(genRandomNumber());
+        }
+        return secret
     }
+
+    genIdentityCommitment(secret: bigint[]): bigint {
+        const secretHash = poseidonHash(secret);
+        return poseidonHash([secretHash]);
+    }
+
 
     serializeIdentity(identity: Identity): string {
         const data = [

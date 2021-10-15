@@ -13,7 +13,8 @@ beforeAll(() => {
 
     for (let i=0; i<leafIndex;i++) {
       const tmpIdentity = ZkIdentity.genIdentity();
-      const tmpCommitment: any = ZkIdentity.genIdentityCommitment(tmpIdentity);
+      const tmpIdentitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(tmpIdentity);
+      const tmpCommitment: bigint = ZkIdentity.genIdentityCommitment(tmpIdentitySecret);
       identityCommitments.push(tmpCommitment);
     }
 })
@@ -24,7 +25,8 @@ describe("Semaphore", () => {
             const identity: Identity = ZkIdentity.genIdentity();
             const externalNullifier: string = genExternalNullifier("voting_1");
             const signal: string = '0x111';
-            const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identity);
+            const identitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(identity);
+            const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identitySecret);
 
             const commitments: Array<bigint> = Object.assign([], identityCommitments);
             commitments.push(identityCommitment);
@@ -42,7 +44,8 @@ describe("Semaphore", () => {
             const externalNullifier: string = genExternalNullifier("voting_1");
             const signal: string = '0x111';
             const nullifierHash: bigint = Semaphore.genNullifierHash(externalNullifier, identity.identityNullifier, 20);
-            const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identity);
+            const identitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(identity);
+            const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identitySecret);
 
             const commitments: Array<bigint> = Object.assign([], identityCommitments);
             commitments.push(identityCommitment);

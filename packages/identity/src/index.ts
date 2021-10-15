@@ -1,5 +1,5 @@
-import Identity from './identity-factory';
+import ZkIdentity from './identity-factory';
 
 export {
-    Identity
+    ZkIdentity
 }

@@ -9,7 +9,7 @@ const poseidonHash = (data: Array<bigint>): bigint => {
     return ciromlibjs.poseidon(data);
 }
 
-class Identity {
+class ZkIdentity {
     genIdentity(strategy: string = 'random', metadata: any = {}): _Identity {
         if(strategy === 'random') return genRandomIdentity();
         else if (strategy === 'signedMessage') return genIdentityFromSignedMessage(metadata)
@@ -44,4 +44,4 @@ class Identity {
     }
 }
 
-export default new Identity();
+export default new ZkIdentity();

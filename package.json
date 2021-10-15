@@ -1,0 +1,30 @@
+{
+  "name": "libsemaphore-modules",
+  "version": "1.0.0",
+  "description": "different modules for libsemaphore",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akinovak/libsemaphore-modules.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akinovak/libsemaphore-modules/issues"
+  },
+  "homepage": "https://github.com/akinovak/libsemaphore-modules#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "jest": "^27.2.5",
+    "jest-config": "^27.2.5",
+    "lerna": "^4.0.0",
+    "ts-jest": "^27.0.6"
+  }
+}

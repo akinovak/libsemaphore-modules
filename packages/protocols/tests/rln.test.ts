@@ -72,5 +72,25 @@ describe("Rln", () => {
 
             expect(res).toBe(true);
         })
+        it("Should retrieve user secret after spaming", () => {
+            const identity: Identity = ZkIdentity.genIdentity();
+            const identitySecret: bigint = ZkIdentity.genSecret(identity);
+
+            const signal1 = 'hey hey';
+            const signalHash1 = genSignalHash(signal1);
+            const signal2 = 'hey hey again';
+            const signalHash2 = genSignalHash(signal2);
+
+            const epoch: string = genExternalNullifier('test-epoch');
+            const rlnIdentifier: bigint = Rln.genIdentifier();
+
+            const [y1, nullifier1] = Rln.calculateOutput(identitySecret, epoch, rlnIdentifier, signalHash1);
+            const [y2, nullifier2] = Rln.calculateOutput(identitySecret, epoch, rlnIdentifier, signalHash2);
+
+            const retrievedSecret: bigint = Rln.retrieveSecret(signalHash1, signalHash2, y1, y2);
+
+            expect(retrievedSecret).toEqual(identitySecret);
+
+        })
     })
 })

@@ -27,7 +27,7 @@ class Rln extends ZkProtocol {
         return poseidonHash([a1, rlnIdentifier]);
     }
 
-    retrievePrivateKey(x1: bigint, x2:bigint, y1:bigint, y2:bigint): bigint {
+    retrieveSecret(x1: bigint, x2:bigint, y1:bigint, y2:bigint): bigint {
         const slope = Fq.div(Fq.sub(y2, y1), Fq.sub(x2, x1))
         const privateKey = Fq.sub(y1, Fq.mul(slope, x1));
         return Fq.normalize(privateKey);

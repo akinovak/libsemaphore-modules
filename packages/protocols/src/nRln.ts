@@ -39,7 +39,7 @@ class NRln extends ZkProtocol {
         return poseidonHash(coeffs);
     }
 
-    retrievePrivateKey(xs: Array<bigint>, ys: Array<bigint>): bigint {
+    retrieveSecret(xs: Array<bigint>, ys: Array<bigint>): bigint {
         if(xs.length !== ys.length) throw new Error('x and y arrays must be of same size');
         const numOfPoints: number = xs.length;
         let f0: bigint = BigInt(0);

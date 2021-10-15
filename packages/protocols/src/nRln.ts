@@ -1,12 +1,12 @@
 import { ZkProtocol } from "./zk-protocol";
 import { genSignalHash, poseidonHash } from "./utils";
 import { Fq } from "./utils";
-import { Identity as _Identity } from '../../types';
+import { Identity } from '../../types';
 
 class NRln extends ZkProtocol {
-    genWitness(identity: _Identity, merkleProof: any, epoch: string | bigint, signal: string, shouldHash: boolean = true): any {
+    genWitness(identity: Identity, merkleProof: any, epoch: string | bigint, signal: string, shouldHash: boolean = true): any {
         return {
-            identity_secret: poseidonHash([identity.identityTrapdoor, identity.identityNullifier]),
+            identity_secret: [identity.identityTrapdoor, identity.identityNullifier],
             path_elements: merkleProof.pathElements,
             identity_path_index: merkleProof.indices,
             x: shouldHash ? genSignalHash(signal): signal,

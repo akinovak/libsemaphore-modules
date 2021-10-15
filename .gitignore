@@ -50,3 +50,5 @@ gh-pages/*
 
 # Optional npm cache directory
 .npm
+
+zkeyFiles

@@ -2,7 +2,7 @@ import { genRandomIdentity, genIdentityFromSignedMessage } from './strategies';
 import * as bigintConversion from 'bigint-conversion';
 import { sha256 as _sha256 } from "js-sha256";
 import * as ciromlibjs from 'circomlibjs';
-import { Identity as _Identity } from '../../types';
+import { Identity } from '../../types';
 
 
 const poseidonHash = (data: Array<bigint>): bigint => {
@@ -10,24 +10,24 @@ const poseidonHash = (data: Array<bigint>): bigint => {
 }
 
 class ZkIdentity {
-    genIdentity(strategy: string = 'random', metadata: any = {}): _Identity {
+    genIdentity(strategy: string = 'random', metadata: any = {}): Identity {
         if(strategy === 'random') return genRandomIdentity();
         else if (strategy === 'signedMessage') return genIdentityFromSignedMessage(metadata)
 
         throw new Error('provided strategy is not supported');
     }
 
-    genSecret(identity: _Identity): bigint {
+    genSecret(identity: Identity): bigint {
         const secret = [identity.identityNullifier, identity.identityTrapdoor];
         return poseidonHash(secret);
     }
 
-    genIdentityCommitment(identity: _Identity): bigint {
+    genIdentityCommitment(identity: Identity): bigint {
         const secret = [this.genSecret(identity)];
         return poseidonHash(secret);
     }
 
-    serializeIdentity(identity: _Identity): string {
+    serializeIdentity(identity: Identity): string {
         const data = [
             identity.identityNullifier.toString(16),
             identity.identityTrapdoor.toString(16),
@@ -35,7 +35,7 @@ class ZkIdentity {
         return JSON.stringify(data)
     }
     
-    unSerializeIdentity(serialisedIdentity: string): _Identity {
+    unSerializeIdentity(serialisedIdentity: string): Identity {
         const data = JSON.parse(serialisedIdentity)
         return {
             identityNullifier: bigintConversion.hexToBigint(data[0]),

@@ -1,4 +1,4 @@
-import ZkIdentity from './identity-factory';
+import ZkIdentity from './identity';
 
 export {
     ZkIdentity

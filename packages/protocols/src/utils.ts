@@ -20,6 +20,21 @@ export const genSignalHash = (signal: string): bigint => {
     return BigInt(ethers.utils.solidityKeccak256(['bytes'], [converted])) >> BigInt(8);
 }
 
+export const genExternalNullifier = (plaintext: string): string => {
+    const _cutOrExpandHexToBytes = (hexStr: string, bytes: number): string => {
+        const len = bytes * 2
+    
+        const h = hexStr.slice(2, len + 2)
+        return '0x' + h.padStart(len, '0')
+    }
+
+    const hashed = ethers.utils.solidityKeccak256(['string'], [plaintext])
+    return _cutOrExpandHexToBytes(
+        '0x' + hashed.slice(8),
+        32,
+    )
+}
+
 export const createTree = (depth: number, zeroValue: number | BigInt, leavesPerNode: number): IncrementalQuinTree => {
     return new Tree.IncrementalQuinTree(depth, zeroValue, leavesPerNode, poseidonHash); 
 }

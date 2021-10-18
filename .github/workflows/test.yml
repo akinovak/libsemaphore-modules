@@ -22,7 +22,7 @@ jobs:
             - run: npm i
             - run: npm test
 
-            - name: Coveralls
-              uses: coverallsapp/github-action@master
-              with:
-                  github-token: ${{ secrets.TEST_SECRET }}
+            # - name: Coveralls
+            #   uses: coverallsapp/github-action@master
+            #   with:
+            #       github-token: ${{ secrets.TEST_SECRET }}

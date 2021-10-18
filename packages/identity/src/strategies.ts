@@ -7,14 +7,14 @@ interface identity {
     identityTrapdoor: bigint,
 }
 
-const genRandomIdentity = (): identity => {
-    const genRandomBuffer = (numBytes: number = 32): Buffer => {
-        return crypto.randomBytes(numBytes)
-    }
+const genRandomNumber = (numBytes: number = 32): bigint => {
+    return  bigintConversion.bufToBigint(crypto.randomBytes(numBytes))
+}
 
+const genRandomIdentity = (): identity => {
     return {
-        identityNullifier: bigintConversion.bufToBigint(genRandomBuffer(31)),
-        identityTrapdoor: bigintConversion.bufToBigint(genRandomBuffer(31)),
+        identityNullifier: genRandomNumber(31),
+        identityTrapdoor: genRandomNumber(31)
     }
 }
 
@@ -39,5 +39,6 @@ const genIdentityFromSignedMessage = (metadata: any): identity => {
 
 export {
     genRandomIdentity, 
-    genIdentityFromSignedMessage
+    genIdentityFromSignedMessage,
+    genRandomNumber
 }

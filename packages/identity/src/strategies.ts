@@ -7,7 +7,7 @@ interface identity {
     identityTrapdoor: bigint,
 }
 
-const genRandomNumber = (numBytes: number = 32): bigint => {
+const genRandomNumber = (numBytes = 32): bigint => {
     return  bigintConversion.bufToBigint(crypto.randomBytes(numBytes))
 }
 

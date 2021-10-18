@@ -1,6 +1,5 @@
 import { genRandomIdentity, genIdentityFromSignedMessage, genRandomNumber } from './strategies';
 import * as bigintConversion from 'bigint-conversion';
-import { sha256 as _sha256 } from "js-sha256";
 import * as ciromlibjs from 'circomlibjs';
 import { Identity } from '../../types';
 
@@ -10,7 +9,7 @@ const poseidonHash = (data: Array<bigint>): bigint => {
 }
 
 class ZkIdentity {
-    genIdentity(strategy: string = 'random', metadata: any = {}): Identity {
+    genIdentity(strategy = 'random', metadata: any = {}): Identity {
         if(strategy === 'random') return genRandomIdentity();
         else if (strategy === 'signedMessage') return genIdentityFromSignedMessage(metadata)
 
@@ -21,7 +20,7 @@ class ZkIdentity {
         return [identity.identityNullifier, identity.identityTrapdoor];
     }
 
-    genRandomSecret(parts: number = 2): bigint[] {
+    genRandomSecret(parts = 2): bigint[] {
         const secret: bigint[] = [];
         for(let i = 0; i< parts; i++) {
             secret.push(genRandomNumber());

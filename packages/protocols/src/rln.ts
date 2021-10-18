@@ -1,11 +1,10 @@
 import { ZkProtocol } from "./zk-protocol";
 import { genSignalHash, poseidonHash } from "./utils";
 import { Fq } from "./utils";
-import { Identity } from '../../types';
 
 
 class Rln extends ZkProtocol {
-    genWitness(identitySecret: bigint, merkleProof: any, epoch: string | bigint, signal: string, rlnIdentifier: bigint, shouldHash: boolean = true): any {
+    genWitness(identitySecret: bigint, merkleProof: any, epoch: string | bigint, signal: string, rlnIdentifier: bigint, shouldHash = true): any {
         return {
             identity_secret: identitySecret,
             path_elements: merkleProof.pathElements,

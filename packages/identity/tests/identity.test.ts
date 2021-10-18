@@ -17,7 +17,6 @@ describe("Semaphore identity", () => {
         })
 
         it("Should generate random secret", async () => {
-            const identity: Identity = ZkIdentity.genIdentity();
             const secretParts = 5;
             const identitySecret: bigint[] = ZkIdentity.genRandomSecret(secretParts);
             expect(identitySecret.length).toEqual(5);
@@ -32,7 +31,6 @@ describe("Semaphore identity", () => {
         })
 
         it("Should generate identity commitment from random secret", async () => {
-            const identity: Identity = ZkIdentity.genIdentity();
             const secretParts = 5;
             const identitySecret: bigint[] = ZkIdentity.genRandomSecret(secretParts);
             const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identitySecret);

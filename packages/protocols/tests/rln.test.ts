@@ -1,4 +1,3 @@
-import * as bigintConversion from 'bigint-conversion';
 import { Rln } from "../src";
 import { ZkIdentity } from "../../identity/src";
 import { Identity, MerkleProof, IProof } from "../../types";
@@ -88,8 +87,8 @@ describe("Rln", () => {
             const epoch: string = genExternalNullifier('test-epoch');
             const rlnIdentifier: bigint = Rln.genIdentifier();
 
-            const [y1, nullifier1] = Rln.calculateOutput(secretHash, epoch, rlnIdentifier, signalHash1);
-            const [y2, nullifier2] = Rln.calculateOutput(secretHash, epoch, rlnIdentifier, signalHash2);
+            const [y1] = Rln.calculateOutput(secretHash, epoch, rlnIdentifier, signalHash1);
+            const [y2] = Rln.calculateOutput(secretHash, epoch, rlnIdentifier, signalHash2);
 
             const retrievedSecret: bigint = Rln.retrieveSecret(signalHash1, signalHash2, y1, y2);
 

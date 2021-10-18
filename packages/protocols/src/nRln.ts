@@ -4,7 +4,7 @@ import { Fq } from "./utils";
 import { Identity } from '../../types';
 
 class NRln extends ZkProtocol {
-    genWitness(identity: Identity, merkleProof: any, epoch: string | bigint, signal: string, shouldHash: boolean = true): any {
+    genWitness(identity: Identity, merkleProof: any, epoch: string | bigint, signal: string, shouldHash = true): any {
         return {
             identity_secret: [identity.identityTrapdoor, identity.identityNullifier],
             path_elements: merkleProof.pathElements,
@@ -42,9 +42,9 @@ class NRln extends ZkProtocol {
     retrieveSecret(xs: Array<bigint>, ys: Array<bigint>): bigint {
         if(xs.length !== ys.length) throw new Error('x and y arrays must be of same size');
         const numOfPoints: number = xs.length;
-        let f0: bigint = BigInt(0);
+        let f0 = BigInt(0);
         for(let i = 0; i < numOfPoints; i++) {
-            let p: bigint = BigInt(1);
+            let p = BigInt(1);
             for(let j = 0; j < numOfPoints; j++) {
                 if(j !== i) {
                     p = Fq.mul(p, Fq.div(xs[j], Fq.sub(xs[j], xs[i])))

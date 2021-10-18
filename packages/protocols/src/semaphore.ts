@@ -1,10 +1,9 @@
 import { ZkProtocol } from "./zk-protocol";
 import { genSignalHash, poseidonHash } from "./utils";
-import * as ethers from 'ethers';
 import { Identity, MerkleProof } from '../../types';
 
 class Semaphore extends ZkProtocol {
-    genWitness(identity: Identity, merkleProof: MerkleProof, externalNullifier: string | bigint, signal: string, shouldHash: boolean = true): any {
+    genWitness(identity: Identity, merkleProof: MerkleProof, externalNullifier: string | bigint, signal: string, shouldHash = true): any {
         return {
             identity_nullifier: identity.identityNullifier,
             identity_trapdoor: identity.identityTrapdoor,

@@ -19,10 +19,4 @@ jobs:
               with:
                   node-version: 16.x
 
-            - run: npm i
-            - run: npm test
-
-            # - name: Coveralls
-            #   uses: coverallsapp/github-action@master
-            #   with:
-            #       github-token: ${{ secrets.TEST_SECRET }}
+            - run: npm run lint

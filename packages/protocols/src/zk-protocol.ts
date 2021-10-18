@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const { groth16 } = require('snarkjs');
 import { SNARK_FIELD_SIZE } from "./utils";
 import { IProof } from "../../types";

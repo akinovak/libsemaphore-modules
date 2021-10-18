@@ -24,7 +24,7 @@ describe("Semaphore", () => {
         it("Should generate semaphore witness", async () => {
             const identity: Identity = ZkIdentity.genIdentity();
             const externalNullifier: string = genExternalNullifier("voting_1");
-            const signal: string = '0x111';
+            const signal = '0x111';
             const identitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(identity);
             const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identitySecret);
 
@@ -42,7 +42,7 @@ describe("Semaphore", () => {
              */
             const identity: Identity = ZkIdentity.genIdentity();
             const externalNullifier: string = genExternalNullifier("voting_1");
-            const signal: string = '0x111';
+            const signal = '0x111';
             const nullifierHash: bigint = Semaphore.genNullifierHash(externalNullifier, identity.identityNullifier, 20);
             const identitySecret: bigint[] = ZkIdentity.genSecretFromIdentity(identity);
             const identityCommitment: bigint = ZkIdentity.genIdentityCommitment(identitySecret);
